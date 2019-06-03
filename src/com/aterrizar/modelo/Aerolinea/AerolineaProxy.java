@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class AerolineaProxy {
     private AerolineaLanchita aerolineaLanchita;
     private List<VueloAsiento> vueloAsientos = new ArrayList();
+    private List<AsientoSobreReservado> asientosSobreReservados = new ArrayList();
 
     public AerolineaProxy(AerolineaLanchita aerolineaLanchita) {
         this.aerolineaLanchita = aerolineaLanchita;
@@ -60,6 +61,7 @@ public class AerolineaProxy {
         if(Aerolinea.Lanchita.equals(codigoAerolinea)) {
             try {
                 this.aerolineaLanchita.comprar(codigoAsiento);
+                this.eliminarSobreReservas(codigoAsiento);
             } catch (AsientoLanchitaNoDisponibleException e) {
                 throw new AsientoNoDisponibleException("Aerolinea Lanchita: " + e.getMessage());
             }
@@ -135,5 +137,28 @@ public class AerolineaProxy {
             default:
                 return null;
         }
+    }
+    
+    public void reservar (Asiento asiento, Usuario usuario) {
+    	String codigoAerolinea = asiento.getCodigoAsiento().split(" ")[0];
+        if(Aerolinea.Lanchita.equals(codigoAerolinea)) {
+        	if (asiento.getEstadoAsiento().estaDisponible()) {
+        		this.aerolineaLanchita.reservar(asiento.getCodigoAsiento(), Integer.toString(usuario.getDNI()));
+        	} else {
+        		asientosSobreReservados.add(new AsientoSobreReservado(asiento.getCodigoAsiento(), Integer.toString(usuario.getDNI())));
+        	}
+        }
+    }
+    	
+    public void transferenciaDeReserva (String codigoAsiento) {
+    	List<AsientoSobreReservado> proximosAsientos = (List<AsientoSobreReservado>) asientosSobreReservados.stream().filter(asiento -> codigoAsiento.equals(asiento.getCodigoAsiento()));
+    	if (!proximosAsientos.isEmpty()) {
+    		this.aerolineaLanchita.reservar(proximosAsientos.get(0).getCodigoAsiento(), proximosAsientos.get(0).getDNI());
+    		asientosSobreReservados.remove(proximosAsientos.get(0));
+    	}
+    }
+    
+    private void eliminarSobreReservas (String codigoAsiento) {
+    	this.asientosSobreReservados.removeIf(asiento -> codigoAsiento.equals(asiento.getCodigoAsiento()));
     }
 }

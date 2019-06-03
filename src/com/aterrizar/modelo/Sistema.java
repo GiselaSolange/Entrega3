@@ -49,4 +49,12 @@ public class Sistema {
         usuario.agregarVueloAlHistorial(vueloAsientoFilter);
     }
     
+    public void reservarAsiento(Asiento asiento, Usuario usuario) {
+    	this.aerolineaProxy.reservar(asiento, usuario);
+    }
+    
+    public void transferenciaDeReserva (String codigoAsiento) {
+    	this.aerolineaProxy.transferenciaDeReserva(codigoAsiento);
+    }
+
 }

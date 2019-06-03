@@ -1,7 +1,7 @@
 package com.aterrizar.modelo;
 
 import com.aterrizar.modelo.Asiento.Asiento;
-import com.aterrizar.modelo.Ubicacion.Ubicacion;
+import com.aterrizar.modelo.Ubicacion;
 
 public class FiltroVueloAsiento {
     protected String origen;

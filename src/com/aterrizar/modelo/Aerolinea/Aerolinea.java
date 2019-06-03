@@ -3,8 +3,8 @@ package com.aterrizar.modelo.Aerolinea;
 import com.aterrizar.exception.AsientoNoDisponibleException;
 import com.aterrizar.modelo.Asiento.Asiento;
 import com.aterrizar.modelo.Usuario.Usuario;
+import com.aterrizar.modelo.Vuelo;
 import com.aterrizar.modelo.FiltroVueloAsiento;
-import com.aterrizar.modelo.Vuelo.Vuelo;
 
 import java.util.ArrayList;
 import java.util.List;
